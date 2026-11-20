@@ -38,8 +38,12 @@ export interface BlockConfig {
   id: string;
   /** Number of rows in the block (row 1 is the closest to the stage). */
   rows: number;
-  /** Number of seats in each row. */
-  seatsPerRow: number;
+  /**
+   * Center-to-center distance between neighbouring seats along the arc, in
+   * meters (~0.5). The seat count per row is derived from this: rows further
+   * from the stage have a longer arc and therefore hold more seats.
+   */
+  seatSpacing: number;
   /** Radius of the first row, measured from the stage front-edge center, in meters. */
   firstRowRadius: number;
   /** Radial distance between two consecutive rows, in meters. */
@@ -80,7 +84,10 @@ export interface Seat {
   row: number;
   /** Seat number within the row, starting at 1 (increasing toward +angle). */
   number: number;
-  /** Seat position [x, y, z] in meters (y = height of the seat/eye reference). */
+  /**
+   * Seat position [x, y, z] in meters. x/z = center of the seat on the row's arc,
+   * y = floor height of the row (add ~1.1 m for a seated eye height).
+   */
   position: Vec3;
   /**
    * Facing direction as a yaw angle in radians around the y axis, measured from

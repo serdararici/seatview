@@ -1,7 +1,7 @@
 // Loads and validates venue JSON files from the repo-level `venues/` folder.
 // Server-side only (uses Node's fs). No external validation library on purpose.
 
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import type { BlockConfig, StageConfig, Vec3, VenueConfig } from "./types";
 
@@ -16,10 +16,22 @@ function venuesDir(): string {
   return path.resolve(process.cwd(), "..", "venues");
 }
 
+/** Thrown when no JSON file exists for a (well-formed or malformed) slug. */
+export class VenueNotFoundError extends Error {}
+
+/** Slugs of all venue JSON files, e.g. ["harbiye-acikhava"]. */
+export function listVenueSlugs(): string[] {
+  return readdirSync(venuesDir())
+    .filter((f) => f.endsWith(".json"))
+    .map((f) => f.slice(0, -".json".length))
+    .filter((slug) => SLUG_PATTERN.test(slug))
+    .sort();
+}
+
 /** Reads `venues/<slug>.json` and returns the validated venue. */
 export function loadVenue(slug: string): VenueConfig {
   if (!SLUG_PATTERN.test(slug)) {
-    throw new Error(`Invalid venue slug "${slug}": use lowercase letters, digits and hyphens.`);
+    throw new VenueNotFoundError(`Invalid venue slug "${slug}": use lowercase letters, digits and hyphens.`);
   }
   const file = path.join(venuesDir(), `${slug}.json`);
 
@@ -27,7 +39,7 @@ export function loadVenue(slug: string): VenueConfig {
   try {
     text = readFileSync(file, "utf8");
   } catch {
-    throw new Error(`Venue "${slug}" not found (expected file: ${file}).`);
+    throw new VenueNotFoundError(`Venue "${slug}" not found (expected file: ${file}).`);
   }
 
   let raw: unknown;
@@ -88,7 +100,7 @@ function parseBlock(raw: unknown, label: string): BlockConfig {
   const block: BlockConfig = {
     id: str(b.id, `${label}.id`),
     rows: positiveInt(b.rows, `${label}.rows`),
-    seatsPerRow: positiveInt(b.seatsPerRow, `${label}.seatsPerRow`),
+    seatSpacing: positive(b.seatSpacing, `${label}.seatSpacing`),
     firstRowRadius: positive(b.firstRowRadius, `${label}.firstRowRadius`),
     rowDepth: positive(b.rowDepth, `${label}.rowDepth`),
     rowRise: finite(b.rowRise, `${label}.rowRise`),
@@ -98,6 +110,14 @@ function parseBlock(raw: unknown, label: string): BlockConfig {
   };
   if (block.endAngle <= block.startAngle) {
     throw new Error(`${label}: endAngle must be greater than startAngle.`);
+  }
+  if (block.endAngle - block.startAngle > 2 * Math.PI) {
+    throw new Error(`${label}: the block spans more than a full circle (endAngle - startAngle > 2*PI).`);
+  }
+  // The first row must hold at least one seat, otherwise the block is useless.
+  const firstArc = block.firstRowRadius * (block.endAngle - block.startAngle);
+  if (firstArc < block.seatSpacing) {
+    throw new Error(`${label}: first row arc (${firstArc.toFixed(2)} m) is shorter than seatSpacing.`);
   }
   return block;
 }

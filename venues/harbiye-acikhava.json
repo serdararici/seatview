@@ -15,7 +15,7 @@
     {
       "id": "left",
       "rows": 12,
-      "seatsPerRow": 14,
+      "seatSpacing": 0.5,
       "firstRowRadius": 12,
       "rowDepth": 0.9,
       "rowRise": 0.35,
@@ -26,7 +26,7 @@
     {
       "id": "center",
       "rows": 12,
-      "seatsPerRow": 20,
+      "seatSpacing": 0.5,
       "firstRowRadius": 12,
       "rowDepth": 0.9,
       "rowRise": 0.35,
@@ -37,7 +37,7 @@
     {
       "id": "right",
       "rows": 12,
-      "seatsPerRow": 14,
+      "seatSpacing": 0.5,
       "firstRowRadius": 12,
       "rowDepth": 0.9,
       "rowRise": 0.35,
