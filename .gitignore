@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Build output
+.next/
+out/
+dist/
+build/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Logs and OS files
+*.log
+.DS_Store
+Thumbs.db
+
+# Editor folders
+.idea/
+.vscode/
+
+# Large raw assets kept outside the repo
+*.blend
+*.blend1
