@@ -24,3 +24,5 @@ Thumbs.db
 # Large raw assets kept outside the repo
 *.blend
 *.blend1
+
+*.tsbuildinfo
