@@ -1,15 +1,19 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { CSSProperties } from "react";
+import { Barlow_Condensed, Geist } from "next/font/google";
+import { cssVariables } from "@/theme";
 import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+// Condensed face for the ticket-style seat label (see theme fonts.ticket).
+const barlowCondensed = Barlow_Condensed({
+  variable: "--font-barlow-condensed",
+  subsets: ["latin", "latin-ext"],
+  weight: ["500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -19,7 +23,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${barlowCondensed.variable}`}
+      // Theme tokens as CSS custom properties; single source: src/theme.
+      style={cssVariables() as CSSProperties}
+    >
       <body>{children}</body>
     </html>
   );
