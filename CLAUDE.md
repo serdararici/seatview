@@ -48,6 +48,25 @@ Views are estimates and must always be labeled as such in the UI.
 - Do not scrape ticketing sites. Venue seat data is entered by hand or
   provided by partners.
 
+## Design
+- Any UI work (pages, overlays, selectors, theme, copy, layout) must use the
+  `frontend-design` skill for aesthetic direction (typography, hierarchy,
+  restraint, no generic "AI look") and the `ui-ux-pro-max` skill for UX rules,
+  accessibility, spacing and color-system decisions. Invoke them explicitly at
+  the start of every UI task; do not rely on them triggering by themselves.
+  Pure engine/math work does not need them.
+- One source of truth for design tokens: `web/src/theme/` (CSS variables +
+  a typed tokens file). Never hard-code colors, fonts or spacing in components,
+  so the whole look can be changed in one place later.
+- Starting direction (a draft, not final; the owner may change it): dark warm
+  ground `#121110`, surface `#1C1A18`, line `#2E2A26`, text `#F4EFE8`, muted
+  text `#B8AFA5`, one amber accent `#F0B14A` (dark text `#1A1306` on it).
+  Fonts: Space Grotesk for headings, Inter for body.
+- Quality bar: real `<button>`/`<a>`/`<label>` elements, text contrast >= 4.5:1,
+  touch targets >= 44px, works at phone width, no emoji used as icons.
+- Every seat view must be labeled as an estimate ("Estimated view") and show
+  the venue's data status (sample vs verified) when it is not verified.
+
 ## Notes
 - Planning notes live outside this repo in `../notes/`; do not move them here.
 - Reference photos live in `../references/` and must not be committed.
