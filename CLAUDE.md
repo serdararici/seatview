@@ -6,17 +6,21 @@ ticket (open-air theaters, concert halls, cinemas; later train/bus window info).
 Views are estimates and must always be labeled as such in the UI.
 
 ## Stack
-- Next.js (App Router) + TypeScript
+- Monorepo: the Next.js app lives in `web/`, venue data in `venues/` at the repo root,
+  a future backend goes in its own top-level folder (e.g. `api/`).
+- Next.js (App Router) + TypeScript (run npm commands inside `web/`)
+- Before writing any Next.js code, read `web/AGENTS.md` (this Next.js version has
+  breaking changes; the docs ship in `web/node_modules/next/dist/docs/`).
 - React Three Fiber (Three.js) + drei for 3D
 - No backend yet (phase 2: Spring Boot + PostgreSQL)
 
 ## Architecture rules
 - Venues are data: one JSON file per venue in `venues/`. Never hard-code venue
   geometry in components.
-- Each venue type has its own generator in `src/engine/generators/`
+- Each venue type has its own generator in `web/src/engine/generators/`
   (amphitheater, cinema, train). Adding a venue = new JSON, adding a venue
   type = new generator.
-- Keep 3D scene code in `src/viewer/`, pure seat-position math in `src/engine/`
+- Keep 3D scene code in `web/src/viewer/`, pure seat-position math in `web/src/engine/`
   (no React or Three.js imports there, so it stays unit-testable).
 - Colors, fonts and spacing live in one theme file so the design can change later.
 - Sample or unverified measurements must be marked as sample data in the JSON.

@@ -9,12 +9,29 @@ information for train and bus seats.
 > Status: early planning. Views are estimates and will be calibrated with
 > on-site photos.
 
-## Planned stack
+## Stack
 
 - Web: Next.js + React Three Fiber (Three.js) + TypeScript
 - API (phase 2): Spring Boot + PostgreSQL
 - Venues are described as JSON files; a generator per venue type
   (amphitheater, cinema, train coach) creates the 3D seat positions.
+
+## Repository structure
+
+```
+web/      Next.js app (run all npm commands here)
+  src/viewer/   3D scene code (React Three Fiber)
+  src/engine/   pure seat-position math (planned)
+venues/   one JSON file per venue
+```
+
+## Development
+
+```
+cd web
+npm install
+npm run dev
+```
 
 ## Roadmap
 

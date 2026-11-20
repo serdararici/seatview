@@ -26,3 +26,6 @@ Thumbs.db
 *.blend1
 
 *.tsbuildinfo
+
+# TypeScript incremental build info
+*.tsbuildinfo
