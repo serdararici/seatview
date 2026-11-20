@@ -22,17 +22,25 @@ Views are estimates and must always be labeled as such in the UI.
 - Sample or unverified measurements must be marked as sample data in the JSON.
 
 ## Working style
-- Work in small steps. Finish one step, show what changed, then stop and wait.
-  Do not build several features in one go.
-- NEVER run `git commit`, `git push` or any command that changes git history.
-  The owner commits manually. After each step, only suggest a commit message
+- Work in reasonably small steps and stop after each one to report. Within a step
+  you have full freedom: create, edit, move or delete any file the step needs,
+  including cleanup of leftovers (unused template files, dead code) and small
+  fixes to config files such as .gitignore or tsconfig. Do not ask permission
+  for these; just list what you changed.
+- Dependencies: install what the step needs without asking, but say what each
+  package is for and why. Ask first only for something unusual: paid services,
+  large or unmaintained packages, or anything that changes the stack.
+- NEVER run `git commit` or `git push`, and do not rewrite git history.
+  The owner commits manually. After each step, suggest a commit message
   (Conventional Commits style, e.g. `feat: add amphitheater seat generator`).
-  Staging (`git add`) is also left to the owner.
-- Before adding a dependency, say what it is for and ask.
+  Read-only git commands (status, diff, log) are fine.
 - Write all code, comments, identifiers and commit messages in English.
   Comment non-obvious logic (especially coordinate math and units: meters).
-- Run the build/lint after each step and report the result honestly.
-  If something fails or is untested, say so.
+- Run lint and build after each step and report the result honestly.
+  For anything visual, start the dev server and check it, or say clearly that
+  you did not look at it in a browser. If something fails or is untested, say so.
+- If a decision is genuinely ambiguous and expensive to undo, ask one short
+  question. Otherwise pick a sensible default and mention it.
 - Do not scrape ticketing sites. Venue seat data is entered by hand or
   provided by partners.
 
